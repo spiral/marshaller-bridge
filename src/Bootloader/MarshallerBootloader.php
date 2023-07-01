@@ -76,7 +76,7 @@ final class MarshallerBootloader extends Bootloader
         PhpSerializer $phpSerializer,
         MarshallerInterface $marshaller
     ): void {
-        $registry->register('json', new Converter($jsonSerializer, $marshaller));
-        $registry->register('serializer', new Converter($phpSerializer, $marshaller));
+        $registry->register('marshaller-json', new Converter($jsonSerializer, $marshaller));
+        $registry->register('marshaller-serializer', new Converter($phpSerializer, $marshaller));
     }
 }

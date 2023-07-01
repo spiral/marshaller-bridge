@@ -25,7 +25,14 @@ final class Converter implements SerializerInterface
     }
 
     /**
+     * @template T of object
+     * @param T|class-string<T>|null $type
+     *
+     * @return T|\stdClass
+     *
      * @throws \ReflectionException
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function unserialize(\Stringable|string $payload, object|string|null $type = null): mixed
     {

@@ -1,9 +1,13 @@
 # Marshaller bridge for Spiral Framework
 
-[![PHP](https://img.shields.io/packagist/php-v/spiral/marshaller-bridge.svg?style=flat-square)](https://packagist.org/packages/spiral/marshaller-bridge)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spiral/marshaller-bridge.svg?style=flat-square)](https://packagist.org/packages/spiral/marshaller-bridge)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spiral/marshaller-bridge/run-tests?label=tests&style=flat-square)](https://github.com/spiral/marshaller-bridge/actions?query=workflow%3Arun-tests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/spiral/marshaller-bridge.svg?style=flat-square)](https://packagist.org/packages/spiral/marshaller-bridge)
+[![PHP Version Require](https://poser.pugx.org/spiral/marshaller-bridge/require/php)](https://packagist.org/packages/spiral/marshaller-bridge)
+[![Latest Stable Version](https://poser.pugx.org/spiral/marshaller-bridge/v/stable)](https://packagist.org/packages/spiral/marshaller-bridge)
+[![phpunit](https://github.com/spiral/marshaller-bridge/actions/workflows/phpunit.yml/badge.svg)](https://github.com/spiral/marshaller-bridge/actions)
+[![psalm](https://github.com/spiral/marshaller-bridge/actions/workflows/psalm.yml/badge.svg)](https://github.com/spiral/marshaller-bridge/actions)
+[![Codecov](https://codecov.io/gh/spiral/marshaller-bridge/branch/1.x/graph/badge.svg)](https://codecov.io/gh/spiral/marshaller-bridge)
+[![Total Downloads](https://poser.pugx.org/spiral/marshaller-bridge/downloads)](https://packagist.org/packages/spiral/marshaller-bridge)
+[![type-coverage](https://shepherd.dev/github/spiral/marshaller-bridge/coverage.svg)](https://shepherd.dev/github/spiral/marshaller-bridge)
+[![psalm-level](https://shepherd.dev/github/spiral/marshaller-bridge/level.svg)](https://shepherd.dev/github/spiral/marshaller-bridge)
 
 ## Requirements
 
@@ -35,6 +39,7 @@ protected const LOAD = [
 > you don't need to register bootloader by yourself.
 
 ## Configuration
+
 The package is already configured by default, use these features only if you need to change the default configuration.
 
 The package provides the ability to configure the `Spiral\Marshaller\Mapper\MapperFactoryInterface` and `matchers` used by the `Spiral\Marshaller\Marshaller` class.
@@ -46,33 +51,43 @@ Add the `mapperFactory` and `matchers` configuration parameters. For example:
 declare(strict_types=1);
 
 use Spiral\Core\Container\Autowire;
-use Spiral\Marshaller\Mapper\AttributeMapperFactory
+use Spiral\Marshaller\Mapper\AttributeMapperFactory;
+use Spiral\Marshaller\Type\ArrayType;
+use Spiral\Marshaller\Type\DateTimeType;
+use Spiral\Marshaller\Type\DateIntervalType;
+use Spiral\Marshaller\Type\EnumType;
+use Spiral\Marshaller\Type\ObjectType;
 
 return [
-    'mapperFactory' => AttributeMapperFactory::class, 
+    'mapperFactory' => AttributeMapperFactory::class,
     'matchers' => [
+        EnumType::class,
         DateTimeType::class,
         DateIntervalType::class,
         ArrayType::class,
         ObjectType::class,
-    ],      
+    ],
 ];
 ```
 
 ## Usage
+
 Using with `Spiral\Serializer\SerializerManager`. For example:
+
 ```php
 use Spiral\Serializer\SerializerManager;
 
-$serializer = $this->container->get(SerializerManager::class); 
+$serializer = $this->container->get(SerializerManager::class);
 
-$result = $manager->serialize($payload, 'json');
-$result = $manager->serialize($payload, 'serializer');
+$result = $manager->serialize($payload, 'marshaller-json');
+$result = $manager->serialize($payload, 'marshaller-serializer');
 
-$result = $manager->unserialize($payload, Post::class, 'json');
-$result = $manager->unserialize($payload, Post::class, 'serializer');
+$result = $manager->unserialize($payload, Post::class, 'marshaller-json');
+$result = $manager->unserialize($payload, Post::class, 'marshaller-serializer');
 ```
+
 Using with `Spiral\Marshaller\MarshallerInterface`. For example:
+
 ```php
 use Spiral\Marshaller\MarshallerInterface;
 
@@ -95,10 +110,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## License
 

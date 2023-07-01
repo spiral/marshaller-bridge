@@ -40,7 +40,7 @@ final class MarshallerBootloaderTest extends TestCase
     {
         $manager = $this->getContainer()->get(SerializerManager::class);
 
-        $this->assertInstanceOf(Converter::class, $manager->getSerializer('json'));
-        $this->assertInstanceOf(Converter::class, $manager->getSerializer('serializer'));
+        $this->assertInstanceOf(Converter::class, $manager->getSerializer('marshaller-json'));
+        $this->assertInstanceOf(Converter::class, $manager->getSerializer('marshaller-serializer'));
     }
 }

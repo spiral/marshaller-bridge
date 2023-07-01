@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Spiral\MarshallerBridge\Tests\DataConverter;
 
 use Carbon\Carbon;
-use Spiral\Marshaller\Internal\Support\DateInterval;
+use Spiral\Marshaller\Support\DateInterval;
 use Spiral\MarshallerBridge\Tests\App\Object\ActivityInfo;
 use Spiral\MarshallerBridge\Tests\App\Object\ActivityType;
 use Spiral\MarshallerBridge\Tests\App\Object\WorkflowExecution;
@@ -26,7 +26,7 @@ final class ConverterTest extends TestCase
             "WorkflowNamespace":"namespace","WorkflowExecution":{"ID":"foo","RunID":"bar"},"ActivityID":"uuid","ActivityType":
             {"Name":"activity"},"TaskQueue":"sometask","HeartbeatTimeout":0,"ScheduledTime":"2010-01-28T15:00:00+02:00",
             "StartedTime":"2010-01-28T15:00:00+02:00","Deadline":"2010-01-28T15:00:00+02:00","Attempt":10}'),
-            preg_replace('/\s+/', '', $serializer->serialize($dto, 'json'))
+            preg_replace('/\s+/', '', $serializer->serialize($dto, 'marshaller-json'))
         );
 
         $this->assertSame(
@@ -36,7 +36,7 @@ final class ConverterTest extends TestCase
             "activity";}s:9:"TaskQueue";s:9:"sometask";s:16:"HeartbeatTimeout";i:0;s:13:"ScheduledTime";s:25:"
             2010-01-28T15:00:00+02:00";s:11:"StartedTime";s:25:"2010-01-28T15:00:00+02:00";s:8:"Deadline";s:25:
             "2010-01-28T15:00:00+02:00";s:7:"Attempt";i:10;}'),
-            preg_replace('/\s+/', '', $serializer->serialize($dto, 'serializer'))
+            preg_replace('/\s+/', '', $serializer->serialize($dto, 'marshaller-serializer'))
         );
     }
 
@@ -48,11 +48,19 @@ final class ConverterTest extends TestCase
 
         $this->assertEquals(
             $dto,
-            $serializer->unserialize($serializer->serialize($dto, 'json'), ActivityInfo::class, 'json')
+            $serializer->unserialize(
+                $serializer->serialize($dto, 'marshaller-json'),
+                ActivityInfo::class,
+                'marshaller-json'
+            )
         );
         $this->assertEquals(
             $dto,
-            $serializer->unserialize($serializer->serialize($dto, 'serializer'), ActivityInfo::class, 'serializer')
+            $serializer->unserialize(
+                $serializer->serialize($dto, 'marshaller-serializer'),
+                ActivityInfo::class,
+                'marshaller-serializer'
+            )
         );
     }
 
