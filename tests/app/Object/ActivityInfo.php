@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Spiral\MarshallerBridge\Tests\App\Object;
 
 use Carbon\CarbonImmutable;
-use Carbon\CarbonInterval;
 use Spiral\Marshaller\Meta\Marshal;
-use Spiral\Marshaller\Type\DateIntervalType;
 use Spiral\Marshaller\Type\DateTimeType;
 use Spiral\Marshaller\Type\NullableType;
 use Spiral\Marshaller\Type\ObjectType;
@@ -35,9 +33,6 @@ final class ActivityInfo
     #[Marshal(name: 'TaskQueue')]
     public string $taskQueue = 'foo';
 
-    #[Marshal(name: 'HeartbeatTimeout', type: DateIntervalType::class)]
-    public \DateInterval $heartbeatTimeout;
-
     #[Marshal(name: 'ScheduledTime', type: DateTimeType::class)]
     public \DateTimeInterface $scheduledTime;
 
@@ -56,7 +51,6 @@ final class ActivityInfo
         $this->taskToken = 'token';
         $this->type = new ActivityType();
 
-        $this->heartbeatTimeout = CarbonInterval::second(0);
         $this->scheduledTime = CarbonImmutable::now();
         $this->startedTime = CarbonImmutable::now();
         $this->deadline = CarbonImmutable::now();
